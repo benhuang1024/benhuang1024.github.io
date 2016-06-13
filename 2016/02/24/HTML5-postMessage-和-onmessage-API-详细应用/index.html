@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title> HTML5 postMessage 和 onmessage API 详细应用 | ben&#39;s blog - 如果今天和昨天没有任何区别，那么明天又有什么意义</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="至 2008 年 W3C 制定出第一个 HTML5 草案开始，HTML5 承载了越来越多崭新的特性和功能。它不但强化了 Web 系统或网页的表现性能，而且还增加了对本地数据库等 Web 应用功能的支持。其中，最重要的一个便是对多线程的支持。在 HTML5 中提出了工作线程（Web Workers）的概念，并且规范出 Web Workers 的三大主要特征：能够长时间运行（响应），理想的启动性能以及">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" HTML5 postMessage 和 onmessage API 详细应用">
+<meta property="og:url" content="http://blog.benhuang1024.com/2016/02/24/HTML5-postMessage-和-onmessage-API-详细应用/index.html">
+<meta property="og:site_name" content="ben's blog - 如果今天和昨天没有任何区别，那么明天又有什么意义">
+<meta property="og:description" content="至 2008 年 W3C 制定出第一个 HTML5 草案开始，HTML5 承载了越来越多崭新的特性和功能。它不但强化了 Web 系统或网页的表现性能，而且还增加了对本地数据库等 Web 应用功能的支持。其中，最重要的一个便是对多线程的支持。在 HTML5 中提出了工作线程（Web Workers）的概念，并且规范出 Web Workers 的三大主要特征：能够长时间运行（响应），理想的启动性能以及">
+<meta property="og:updated_time" content="2016-05-27T03:08:47.749Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content=" HTML5 postMessage 和 onmessage API 详细应用">
+<meta name="twitter:description" content="至 2008 年 W3C 制定出第一个 HTML5 草案开始，HTML5 承载了越来越多崭新的特性和功能。它不但强化了 Web 系统或网页的表现性能，而且还增加了对本地数据库等 Web 应用功能的支持。其中，最重要的一个便是对多线程的支持。在 HTML5 中提出了工作线程（Web Workers）的概念，并且规范出 Web Workers 的三大主要特征：能够长时间运行（响应），理想的启动性能以及">
+  
+    <link rel="alternative" href="/atom.xml" title="ben&#39;s blog - 如果今天和昨天没有任何区别，那么明天又有什么意义" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://wx.qlogo.cn/mmopen/Q3auHgzwzM66Ugd0mWJgpbvCgUiaGuDDZqtKxGqM9KMicOKwBySJv0ta4A4osQwd3MwlXhDe5kbdJgg2snaBl78ygMk9YfaxUBjiaILXic6K6Xo/0" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Ben Huang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">人生当苦无妨，良人当归就好</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/php">PHP</a></li>
+				        
+							<li><a href="/tags/mysql">MySQL</a></li>
+				        
+							<li><a href="/tags/js">JS</a></li>
+				        
+							<li><a href="/tags/html5">HTML5</a></li>
+				        
+							<li><a href="/tags/技术心得">技术心得</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/benhuang1024" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="mailto:benhuang1024@gmail.com" title="mail">mail</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/float/" style="font-size: 10px;">float</a> <a href="/tags/hello/" style="font-size: 10px;">hello</a> <a href="/tags/html5/" style="font-size: 10px;">html5</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/node-js/" style="font-size: 10px;">node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/session/" style="font-size: 10px;">session</a> <a href="/tags/技术心得/" style="font-size: 10px;">技术心得</a> <a href="/tags/重构/" style="font-size: 10px;">重构</a> <a href="/tags/需求/" style="font-size: 10px;">需求</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Ben Huang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://wx.qlogo.cn/mmopen/Q3auHgzwzM66Ugd0mWJgpbvCgUiaGuDDZqtKxGqM9KMicOKwBySJv0ta4A4osQwd3MwlXhDe5kbdJgg2snaBl78ygMk9YfaxUBjiaILXic6K6Xo/0" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Ben Huang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">人生当苦无妨，良人当归就好</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/php">PHP</a></li>
+		        
+					<li><a href="/tags/mysql">MySQL</a></li>
+		        
+					<li><a href="/tags/js">JS</a></li>
+		        
+					<li><a href="/tags/html5">HTML5</a></li>
+		        
+					<li><a href="/tags/技术心得">技术心得</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/benhuang1024" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="mailto:benhuang1024@gmail.com" title="mail">mail</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-HTML5-postMessage-和-onmessage-API-详细应用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/02/24/HTML5-postMessage-和-onmessage-API-详细应用/" class="article-date">
+  	<time datetime="2016-02-24T03:01:37.000Z" itemprop="datePublished">2016-02-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+       HTML5 postMessage 和 onmessage API 详细应用
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/api/">api</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/html5/">html5</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>至 2008 年 W3C 制定出第一个 HTML5 草案开始，HTML5 承载了越来越多崭新的特性和功能。它不但强化了 Web 系统或网页的表现性能，而且还增加了对本地数据库等 Web 应用功能的支持。其中，最重要的一个便是对多线程的支持。在 HTML5 中提出了工作线程（Web Workers）的概念，并且规范出 Web Workers 的三大主要特征：能够长时间运行（响应），理想的启动性能以及理想的内存消耗。Web Workers 允许开发人员编写能够长时间运行而不被用户所中断的后台程序，去执行事务或者逻辑，并同时保证页面对用户的及时响应。<br>Web Workers 为 Web 前端网页上的脚本提供了一种能在后台进程中运行的方法。一旦它被创建，Web Workers 就可以通过 postMessage 向任务池发送任务请求，执行完之后再通过 postMessage 返回消息给创建者指定的事件处理程序 ( 通过 onmessage 进行捕获 )。Web Workers 进程能够在不影响用户界面的情况下处理任务，并且，它还可以使用 XMLHttpRequest 来处理 I/O，但通常，后台进程（包括 Web Workers 进程）不能对 DOM 进行操作。如果希望后台程序处理的结果能够改变 DOM，只能通过返回消息给创建者的回调函数进行处理。<br>浏览器对 HTML5 支持情况可以参考网站 When can I use…<br>在 Web Workers 中使用 postMessage 和 onmessage<br>首先，需要在客户端页面的 JavaScript 代码中 new 一个 Worker 实例出来，参数是需要在另一个线程中运行的 JavaScript 文件名称。然后在这个实例上监听 onmessage 事件。最后另一个线程中的 JavaScript 就可以通过调用 postMessage 方法在这两个线程间传递数据了。<br>清单 1. 主线程中创建 Worker 实例，并监听 onmessage 事件<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=iso-8859-1"</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>Test Web worker<span class="tag">&lt;/<span class="name">title</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/JavaScript"</span>&gt;</span><span class="xml"> </span><br><span class="line">        function init()&#123; </span><br><span class="line">                var worker = new Worker('compute.js'); </span><br><span class="line">                //event 参数中有 data 属性，就是子线程中返回的结果数据</span><br><span class="line">                worker.onmessage= function (event) &#123; </span><br><span class="line">                        // 把子线程返回的结果添加到 div 上</span><br><span class="line">                        document.getElementById("result").innerHTML += </span><br><span class="line">                           event.data+"<span class="tag">&lt;<span class="name">br</span>/&gt;</span>"; </span><br><span class="line">                &#125;; </span><br><span class="line">        &#125; </span><br><span class="line"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">"init()"</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"result"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>在客户端的 compute.js 中，只是简单的重复多次加和操作，最后通过 postMessage 方法把结果返回给主线程，目的就是等待一段时间。而在这段时间内，主线程不应该被阻塞，用户可以通过拖拽浏览器，变大缩小浏览器窗口等操作测试这一现象。这个非阻塞主线程的结果就是 Web Workers 想达到的目的。<br>清单 2. compute.js 中调用 postMessage 方法返回计算结果<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i=<span class="number">0</span>; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">timedCount</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> j=<span class="number">0</span>,sum=<span class="number">0</span>;j&lt;<span class="number">100</span>;j++)&#123; </span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">100000000</span>;i++)&#123; </span><br><span class="line">                        sum+=i; </span><br><span class="line">                &#125; </span><br><span class="line">        &#125; </span><br><span class="line">        <span class="comment">// 调用 postMessage 向主线程发送消息</span></span><br><span class="line">        postMessage(sum); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">postMessage(<span class="string">"Before computing,"</span>+<span class="keyword">new</span> <span class="built_in">Date</span>()); </span><br><span class="line">timedCount(); </span><br><span class="line">postMessage(<span class="string">"After computing,"</span>+<span class="keyword">new</span> <span class="built_in">Date</span>());</span><br></pre></td></tr></table></figure></p>
+<p>图 1. 浏览器中运行结果<br>浏览器中运行结果<br>Cross-document messaging<br>Cross-document messaging 简介<br>由于同源策略的限制，JavaScript 跨域的问题，一直是一个颇为棘手的问题。HTML5 提供了在网页文档之间互相接收与发送信息的功能。使用这个功能，只要获取到网页所在窗口对象的实例，不仅同源（域 + 端口号）的 Web 网页之间可以互相通信，甚至可以实现跨域通信。 要想接收从其他窗口发送来的信息，必须对窗口对象的 onmessage 事件进行监听，其它窗口可以通过 postMessage 方法来传递数据。该方法使用两个参数：第一个参数为所发送的消息文本，但也可以是任何 JavaScript 对象（通过 JSON 转换对象为文本），第二个参数为接收消息的对象窗口的 URL 地址，可以在 URL 地址字符串中使用通配符’*’指定全部地。<br>在 Cross-document messaging 中使用 postMessage 和 onmessage<br>为了实现不同域之间的通信，需要在操作系统的 hosts 文件添加两个域名，进行模拟。<br>清单 3. hosts 文件中添加两个不同的域名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1     parent.com </span><br><span class="line">127.0.0.1       child.com</span><br></pre></td></tr></table></figure></p>
+<p>在父网页中通过 iframe 嵌入子页面，并在 JavaScript 代码中调用 postMessage 方法发送数据到子窗口。<br>清单 4. 父页面中嵌入子页面，调用 postMessage 方法发送数据<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>Test Cross-domain communication using HTML5<span class="tag">&lt;/<span class="name">title</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/JavaScript"</span>&gt;</span><span class="javascript"> </span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">sendIt</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">                <span class="comment">// 通过 postMessage 向子窗口发送数据</span></span><br><span class="line">                <span class="built_in">document</span>.getElementById(<span class="string">"otherPage"</span>).contentWindow </span><br><span class="line">                        .postMessage( </span><br><span class="line">                                <span class="built_in">document</span>.getElementById(<span class="string">"message"</span>).value, </span><br><span class="line">                               <span class="string">"http://child.com:8080"</span></span><br><span class="line">                        ); </span><br><span class="line">        &#125; </span><br><span class="line"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span> </span><br><span class="line">        <span class="comment">&lt;!-- 通过 iframe 嵌入子页面 --&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://child.com:8080/TestHTML5/other-domain.html"</span> </span><br><span class="line">                                <span class="attr">id</span>=<span class="string">"otherPage"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">br</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span>/&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"message"</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> </span><br><span class="line">                        <span class="attr">value</span>=<span class="string">"Send to child.com"</span> <span class="attr">onclick</span>=<span class="string">"sendIt()"</span> /&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>在子窗口中监听 onmessage 事件，并用 JavaScript 实现显示父窗口发送过来的数据。<br>清单 5. 子窗口中监听 onmessage 事件，显示父窗口发送来的数据<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=UTF-8"</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>Web page from child.com<span class="tag">&lt;/<span class="name">title</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/JavaScript"</span>&gt;</span><span class="javascript"> </span><br><span class="line">        <span class="comment">//event 参数中有 data 属性，就是父窗口发送过来的数据</span></span><br><span class="line">        <span class="built_in">window</span>.addEventListener(<span class="string">"message"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"> event </span>) </span>&#123; </span><br><span class="line">                <span class="comment">// 把父窗口发送过来的数据显示在子窗口中</span></span><br><span class="line">          <span class="built_in">document</span>.getElementById(<span class="string">"content"</span>).innerHTML+=event.data+<span class="string">"&lt;br/&gt;"</span>; </span><br><span class="line">        &#125;, <span class="literal">false</span> ); </span><br><span class="line"></span><br><span class="line"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span> </span><br><span class="line">        Web page from http://child.com:8080 </span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"content"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>图 2. 父窗口嵌入子窗口<br>父窗口嵌入子窗口<br>图 3. 父窗口发送数据到子窗口<br>父窗口发送数据到子窗口<br>WebSockets<br>WebSockets 简介<br>在 Web 应用中，HTTP 协议决定了客户端和服务端连接是短连接，即客户端 Request，服务端 Response，连接断开。要想实现客户端和服务端实时通信，只能通过客户端轮询来实现。服务端推送数据也并不是字面上意思上的直接推，其实还是客户端自己取。WebSockets 是 HTML5 规范新引入的功能，用于解决浏览器与后台服务器双向通讯的问题，使用 WebSockets 技术，后台可以随时向前端推送消息，以保证前后台状态统一。<br>在 WebSockets 中使用 send 和 onmessage<br>由于文本主要介绍 postMessage(send) 和 onmessage 客户端 API 的应用，而 WebSockets 涉及到服务器端代码的实现，所以本文将选取最简单的服务器端框架来编写服务器代码。WebSockets 服务器端有 jetty 提供的基于 Java 的实现，有 WebSocket-Node 基于 Node.js 的实现，在 .Net 4.5 中也直接提供了 WebSockets 的支持。本文将使用 WebSocket-Node 提供的示例代码，稍作修改作为 WebSockets 的服务器端。关于 node.js 的介绍以及使用请参考 node.js 官方网站 node.js，关于 WebSocket-Node 的使用请参考 WebSocket-Node。<br>首先，需要在客户端通过 JavaScript 代码 new 一个 WebSocket 实例出来，参数是实现 WebSocket 服务器端 URL 地址。然后在这个实例上监听 onmessage 事件接收服务器端发送过来的数据。当然，客户端也可以调用 send 方法，发送数据到服务器端。<br>清单 6. 创建 WebSocket 对象，并监听 onmessage 事件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">connect : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">   <span class="keyword">var</span> location =<span class="string">"ws://localhost:8000/"</span>; </span><br><span class="line">        <span class="comment">// 创建 WebSockets 并传入 WebSockets server 地址</span></span><br><span class="line">   <span class="keyword">this</span>._ws =<span class="keyword">new</span> WebSocket(location); </span><br><span class="line">   <span class="keyword">this</span>._ws.onmessage=<span class="keyword">this</span>._onmessage; </span><br><span class="line">  <span class="comment">//WebSockets 还提供了 onopen 以及 onclose 事件</span></span><br><span class="line">   <span class="keyword">this</span>._ws.onopen =<span class="keyword">this</span>._onopen; </span><br><span class="line">   <span class="keyword">this</span>._ws.onclose =<span class="keyword">this</span>._onclose; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在 _onmessage 方法中，接收数据，并显示在页面上<br>清单 7. _onmessage 方法<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">_onmessage : <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123; </span><br><span class="line">        <span class="comment">//event 参数中有 data 属性，就是服务器发送过来的数据</span></span><br><span class="line">    <span class="keyword">if</span> (event.data) &#123; </span><br><span class="line">        <span class="keyword">var</span> messageBox = <span class="built_in">document</span>.getElementById(<span class="string">'messageBox'</span>); </span><br><span class="line">        <span class="keyword">var</span> spanText = <span class="built_in">document</span>.createElement(<span class="string">'span'</span>); </span><br><span class="line">        spanText.className =<span class="string">'text'</span>; </span><br><span class="line">                <span class="comment">// 把服务器发送过来的数据显示在窗口中</span></span><br><span class="line">        spanText.innerHTML = event.data; </span><br><span class="line">        <span class="keyword">var</span> lineBreak = <span class="built_in">document</span>.createElement(<span class="string">'br'</span>); </span><br><span class="line">        messageBox.appendChild(spanText); </span><br><span class="line">        messageBox.appendChild(lineBreak); </span><br><span class="line">        messageBox.scrollTop = messageBox.scrollHeight </span><br><span class="line">                - messageBox.clientHeight; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure></p>
+<p>在 _onopen 方法中，调用 _send 方法发送一条消息到服务器端，告之连接已经建立。在 _onclose 方法中，把 WebSocket 的实例设置成 null，释放资源。<br>清单 8. _onopen，_onclose 以及 send 方法<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">_onopen : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">    server._send(<span class="string">"Client:Open WebSockets,"</span>+<span class="keyword">new</span> <span class="built_in">Date</span>()); </span><br><span class="line">&#125;, </span><br><span class="line"><span class="comment">//message 参数就是客户端向服务器端发送的数据</span></span><br><span class="line">_send : <span class="function"><span class="keyword">function</span>(<span class="params">message</span>) </span>&#123; </span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>._ws) </span><br><span class="line">        <span class="keyword">this</span>._ws.send(message); </span><br><span class="line">&#125;, </span><br><span class="line"><span class="comment">// 此方法提供外部代码调用</span></span><br><span class="line">send : <span class="function"><span class="keyword">function</span>(<span class="params">text</span>) </span>&#123; </span><br><span class="line">    <span class="keyword">if</span> (text !=<span class="literal">null</span>&amp;&amp; text.length &gt;<span class="number">0</span>) </span><br><span class="line">        server._send(text); </span><br><span class="line">&#125;, </span><br><span class="line"></span><br><span class="line">_onclose : <span class="function"><span class="keyword">function</span>(<span class="params">m</span>) </span>&#123; </span><br><span class="line">    <span class="keyword">this</span>._ws =<span class="literal">null</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>把这些方法封装在一个 server 对象中，方便提供外部调用。用户只需要先调用 server 的 connect 方法建立连接，然后调用 send 方法发送数据。<br>清单 9. 封装客户端实现<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> server = &#123; </span><br><span class="line">        <span class="comment">// 对外主要提供 connect 和 send 方法</span></span><br><span class="line">   connect : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;...&#125;, </span><br><span class="line">   _onopen : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;...&#125;, </span><br><span class="line">   _send : <span class="function"><span class="keyword">function</span>(<span class="params">message</span>) </span>&#123;...&#125;, </span><br><span class="line">   send : <span class="function"><span class="keyword">function</span>(<span class="params">text</span>) </span>&#123;...&#125;, </span><br><span class="line">   _onmessage : <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;...&#125;, </span><br><span class="line">   _onclose : <span class="function"><span class="keyword">function</span>(<span class="params">m</span>) </span>&#123;...&#125; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>在服务器端，通过 JavaScript 语言简单修改 WebSocket-Node 中提供的 echo-server.js 示例即可。这里只展示关键代码部分，其它代码请参见 WebSocket-Node 示例。<br>清单 10. WebSockets 服务器端简单实现<br> // 监听客户端的连接请求<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">wsServer.on(<span class="string">'connect'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">connection</span>) </span>&#123; </span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">sendCallback</span>(<span class="params">err</span>) </span>&#123; </span><br><span class="line">       <span class="keyword">if</span> (err) <span class="built_in">console</span>.error(<span class="string">"send() error: "</span> + err); </span><br><span class="line">   &#125; </span><br><span class="line">        <span class="comment">// 监听客户端发送数据的请求</span></span><br><span class="line">   connection.on(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">message</span>) </span>&#123; </span><br><span class="line">       <span class="keyword">if</span> (message.type === <span class="string">'utf8'</span>) &#123;<span class="comment">// 区别客户端发过来的数据是文本还是二进制类型</span></span><br><span class="line">           connection.sendUTF( </span><br><span class="line">                               <span class="string">"Server:Get message:&lt;br/&gt;"</span>+message.utf8Data, sendCallback </span><br><span class="line">                        ); </span><br><span class="line">       &#125; </span><br><span class="line">       <span class="keyword">else</span> <span class="keyword">if</span> (message.type === <span class="string">'binary'</span>) &#123; </span><br><span class="line">           connection.sendBytes(message.binaryData, sendCallback); </span><br><span class="line">       &#125; </span><br><span class="line">   &#125;); </span><br><span class="line">   connection.on(<span class="string">'close'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">reasonCode, description</span>) </span>&#123; </span><br><span class="line">   &#125;); </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>图 4. 点击 Connect 按钮<br>点击 Connect 按钮<br>图 5. 输入内容，单击 Send Message 按钮<br>输入内容，单击 Send Message 按钮<br>Server-Sent Events<br>Server-Sent Events 简介<br>HTML5 Server-Sent 事件模型允许您从服务器 push 实时数据到浏览器。本文我们将介绍利用 Eventsource 对象处理与页面间的接收和发送数据。在客户端，我们使用 HTML5+JavaScript，服务端使用 Java。在现存的 Ajax 模式中，web 页面会持续不断地请求服务器传输新数据，由客户端负责请求数据。而在服务端发送模式下，无需在客户端代码中执行连续的数据请求，而是由服务端 push 推送更新。一旦您在页面中初始化了 Server-Sent 事件，服务端脚本将持续地发送更新。客户端 JavaScript 代码一旦接收到更新就将新的数据写入页面中展示出来。<br>在 Server-Sent Events 中使用 onmessage<br>Server-Sent Events 和 WebSockets 有相同之处，WebSockets 实现了服务器端以及客户端的双向通信功能，而 Server-Sent Events 则仅是指服务器端到客户端的单向通信，而且 Server-Sent Events 同样需要服务器端的实现，本文将使用基于 Java 的 Servlet 技术实现服务器端。关于服务器端向客户端写数据的格式，可以参考 W3C 关于 Server-Sent Events 的规范文档 Server-Sent Events。由于是服务器端到客户端的单向通信，所以在 Server-Sent Events 中没有 postMessage 方法。<br>首先，在客户端通过 JavaScript 代码 new 一个 EventSource 实例出来，参数是实现 EventSource 服务器端 URL 地址。然后在这个实例上监听 onmessage 事件接收服务器端发送过来的数据。<br>清单 11. 创建 EventSource 对象，并监听 onmessage 事件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!!<span class="built_in">window</span>.EventSource) &#123; </span><br><span class="line"><span class="comment">// 创建 EventSource 实例，传入 server 地址</span></span><br><span class="line">         <span class="keyword">var</span> source = <span class="keyword">new</span> EventSource(<span class="string">'/TestHTML5/ServerSentEvent'</span>); </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">         <span class="built_in">console</span>.log(<span class="string">"Your browser doesn't support server-sent event"</span>); </span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">// 监听 message 事件，等待接收服务器端发送过来的数据</span></span><br><span class="line">source.addEventListener(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123; </span><br><span class="line">                <span class="comment">//event 参数中有 data 属性，就是服务器发送过来的数据</span></span><br><span class="line">         <span class="built_in">console</span>.log(event.data); </span><br><span class="line">&#125;, <span class="literal">false</span>); </span><br><span class="line"></span><br><span class="line"><span class="comment">//EventSource 还提供了 onopen 以及 onerror 事件</span></span><br><span class="line">source.addEventListener(<span class="string">'open'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123; </span><br><span class="line">&#125;, <span class="literal">false</span>); </span><br><span class="line"></span><br><span class="line">source.addEventListener(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123; </span><br><span class="line">        <span class="keyword">if</span> (event.readyState == EventSource.CLOSED) &#123; </span><br><span class="line">         &#125; </span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure></p>
+<p>服务器端，在 Java 语言实现的 Servlet doGet 方法中使用 response 对象向客户端写数据<br>清单 10. 服务器端简单实现<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里必须设置 Content-Type 为 text/event-stream </span></span><br><span class="line">response.setHeader(<span class="string">"Content-Type"</span>, <span class="string">"text/event-stream"</span>); </span><br><span class="line">response.setHeader(<span class="string">"Cache-Control"</span>, <span class="string">"no-cache"</span>); </span><br><span class="line">response.setCharacterEncoding (<span class="string">"UTF-8"</span>); </span><br><span class="line"></span><br><span class="line"><span class="built_in">String</span> id = <span class="keyword">new</span> <span class="built_in">Date</span>().toString(); </span><br><span class="line">response.getWriter().println(<span class="string">"id:"</span>+id); </span><br><span class="line"><span class="comment">// 向客户端写两行数据</span></span><br><span class="line">response.getWriter().println(<span class="string">"data:server-sent event is working."</span>); </span><br><span class="line">response.getWriter().println(<span class="string">"data:test server-sent event multi-line data"</span>); </span><br><span class="line">response.getWriter().println(); </span><br><span class="line">response.getWriter().flush();</span><br></pre></td></tr></table></figure></p>
+<p>图 6. Server-Sent Events 运行结果<br>Server-Sent Events 运行结果<br>结束语<br>本文详细介绍了 postMessage（send）和 onmessage API 在客户端的应用情况，可以看到在不同的场景中这两个方法的应用模式都是类似的。postMessage 的作用就是传递数据，而 onmessage 的作用就是接收数据。掌握此组 API 对以后开发 HTML 5 应用程序将会有所帮助。本文 Web Workers，Cross-document messaging，WebSockets 的代码在 Firefox 14 下通过测试，Server-Sent Events 的代码在 Chrome 16 下通过测试。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/11/25/PHP-浮点数计算比较及取整不准确的解决方法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">PHP 浮点数计算比较及取整不准确的解决方法</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="HTML5-postMessage-和-onmessage-API-详细应用" data-title=" HTML5 postMessage 和 onmessage API 详细应用" data-url="http://blog.benhuang1024.com/2016/02/24/HTML5-postMessage-和-onmessage-API-详细应用/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"benhuang1024"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+  
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Ben Huang
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
