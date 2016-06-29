@@ -968,6 +968,8 @@ a {
   line-height: 1.8em;
   padding-right: 30px;
   padding-left: 30px;
+  max-height:300px;
+  overflow:hidden;
 }
 .article-entry p {
   margin-top: 10px;
