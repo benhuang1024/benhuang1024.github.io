@@ -1,4 +1,4 @@
 # benhuang1024.github.io
 my blog
 
-[click here](http://blog.benhuang1024.com)
+[click here -> blog.benhuang1024.com](http://blog.benhuang1024.com)
