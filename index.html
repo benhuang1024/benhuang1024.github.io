@@ -117,7 +117,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/2016新广告法/" style="font-size: 10px;">2016新广告法</a> <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/float/" style="font-size: 10px;">float</a> <a href="/tags/hello/" style="font-size: 10px;">hello</a> <a href="/tags/html5/" style="font-size: 10px;">html5</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/node-js/" style="font-size: 10px;">node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/session/" style="font-size: 10px;">session</a> <a href="/tags/技术心得/" style="font-size: 10px;">技术心得</a> <a href="/tags/重构/" style="font-size: 10px;">重构</a> <a href="/tags/需求/" style="font-size: 10px;">需求</a>
+						<a href="/tags/2016新广告法/" style="font-size: 10px;">2016新广告法</a> <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/float/" style="font-size: 10px;">float</a> <a href="/tags/hello/" style="font-size: 10px;">hello</a> <a href="/tags/html5/" style="font-size: 10px;">html5</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/node-js/" style="font-size: 10px;">node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/session/" style="font-size: 10px;">session</a> <a href="/tags/wechat/" style="font-size: 10px;">wechat</a> <a href="/tags/小程序-，应用号，微信应用号，微信小程序/" style="font-size: 10px;">小程序 ，应用号，微信应用号，微信小程序</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/技术心得/" style="font-size: 10px;">技术心得</a> <a href="/tags/重构/" style="font-size: 10px;">重构</a> <a href="/tags/需求/" style="font-size: 10px;">需求</a>
 					</div>
 				</section>
 				
@@ -196,8 +196,8 @@
     <article id="post-微信小程序" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/09/23/微信小程序/" class="article-date">
-  	<time datetime="2016-09-23T03:06:47.582Z" itemprop="datePublished">2016-09-23</time>
+      <a href="/2016/09/22/微信小程序/" class="article-date">
+  	<time datetime="2016-09-21T16:00:00.000Z" itemprop="datePublished">2016-09-22</time>
 </a>
     </div>
   
@@ -206,9 +206,20 @@
       <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/22/微信小程序/">微信应用号-小程序</a>
+    </h1>
+  
+
+      </header>
+      
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <p>K，为了让大家尽快看到这份教程，博卡君注定要熬夜了！今晚开始更新，希望明天一早就能发布第一篇教程！记录开始！看看几天能完成变身吧！</p>
+        <p>为了让大家尽快看到这份教程，博卡君注定要熬夜了！今晚开始更新，希望明天一早就能发布第一篇教程！记录开始！看看几天能完成变身吧！</p>
 <p>序言</p>
 <p>开始开发应用号之前，先看看官方公布的「小程序」教程吧！（以下内容来自微信官方公布的「小程序」开发指南）</p>
 <p>本文档将带你一步步创建完成一个微信小程序，并可以在手机上体验该小程序的实际效果。这个小程序的首页将会显示欢迎语以及当前用户的微信头像，点击头像，可以在新开的页面中查看当前小程序的启动日志。</p>
@@ -229,178 +240,23 @@
 </ol>
 <p>点击开发者工具左侧导航的「编辑」，我们可以看到这个项目，已经初始化并包含了一些简单的代码文件。最关键也是必不可少的，是 app.js、app.json、app.wxss 这三个。其中，.js 后缀的是脚本文件，.json 后缀的文件是配置文件，.wxss 后缀的是样式表文件。微信小程序会读取这些文件，并生成小程序实例。</p>
 <p>下面我们简单了解这三个文件的功能，方便修改以及从头开发自己的微信小程序。</p>
-<p>app.js 是小程序的脚本代码。我们可以在这个文件中监听并处理小程序的生命周期函数、声明全局变量。调用 MINA 提供的丰富的 API，如本例的同步存储及同步读取本地数据。</p>
-<p>//app.js</p>
-<p>App({</p>
-<p>  onLaunch: function () {</p>
-<pre><code>// 调用 API 从本地缓存中获取数据
-
-var logs = wx.getStorageSync(&apos;logs&apos;) || []
-
-logs.unshift(Date.now())
-
-wx.setStorageSync(&apos;logs&apos;, logs)
-</code></pre><p>  },</p>
-<p>  getUserInfo:function(cb){</p>
-<pre><code>var that = this;
-
-if(this.globalData.userInfo){
-
-  typeof cb == &quot;function&quot; &amp;&amp; cb(this.globalData.userInfo)
-
-}else{
-
-
-
-  // 调用登录接口
-
-  wx.login({
-
-    success: function () {
-
-      wx.getUserInfo({
-
-        success: function (res) {
-
-          that.globalData.userInfo = res.userInfo;
-
-          typeof cb == &quot;function&quot; &amp;&amp; cb(that.globalData.userInfo)
-
-        }
-
-      })
-
-    }
-
-  });
-
-}
-</code></pre><p>  },</p>
-<p>  globalData:{</p>
-<pre><code>userInfo:null
-</code></pre><p>  }</p>
-<p>})<br>app.json 是对整个小程序的全局配置。我们可以在这个文件中配置小程序是由哪些页面组成，配置小程序的窗口  背景色，配置导航条样式，配置默认标题。注意该文件不可添加任何注释。</p>
-<p>/<em>*app.json</em>/<br>{</p>
-<p>  “pages”:[</p>
-<pre><code>&quot;pages/index/index&quot;,
-
-&quot;pages/logs/logs&quot;
-</code></pre><p>  ],</p>
-<p>  “window”:{</p>
-<pre><code>&quot;backgroundTextStyle&quot;:&quot;light&quot;,
-
-&quot;navigationBarBackgroundColor&quot;: &quot;#fff&quot;,
-
-&quot;navigationBarTitleText&quot;: &quot;WeChat&quot;,
-
-&quot;navigationBarTextStyle&quot;:&quot;black&quot;
-</code></pre><p>  }</p>
-<p>}<br>app.wxss 是整个小程序的公共样式表。我们可以在页面组件的 class 属性上直接使用 app.wxss 中声明的样式规则。</p>
-<p>/<strong>app.wxss</strong>/</p>
-<p>.container {</p>
-<p>  height: 100%;</p>
-<p>  display: flex;</p>
-<p>  flex-direction: column;</p>
-<p>  align-items: center;</p>
-<p>  justify-content: space-between;</p>
-<p>  padding: 200rpx 0;</p>
-<p>  box-sizing: border-box;</p>
-<p>}</p>
+<p>app.js 是小程序的脚本代码。我们可以在这个文件中监听并处理小程序的生命周期函数、声明全局变量。调用 MINA 提供的丰富的 API，如本例的同步存储及同步读取本地数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">//app.js</span><br><span class="line"></span><br><span class="line">App(&#123;</span><br><span class="line"></span><br><span class="line">  onLaunch: function () &#123;</span><br><span class="line"></span><br><span class="line">    // 调用 API 从本地缓存中获取数据</span><br><span class="line"></span><br><span class="line">    var logs = wx.getStorageSync(&apos;logs&apos;) || []</span><br><span class="line"></span><br><span class="line">    logs.unshift(Date.now())</span><br><span class="line"></span><br><span class="line">    wx.setStorageSync(&apos;logs&apos;, logs)</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  getUserInfo:function(cb)&#123;</span><br><span class="line"></span><br><span class="line">    var that = this;</span><br><span class="line"></span><br><span class="line">    if(this.globalData.userInfo)&#123;</span><br><span class="line"></span><br><span class="line">      typeof cb == &quot;function&quot; &amp;&amp; cb(this.globalData.userInfo)</span><br><span class="line"></span><br><span class="line">    &#125;else&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      // 调用登录接口</span><br><span class="line"></span><br><span class="line">      wx.login(&#123;</span><br><span class="line"></span><br><span class="line">        success: function () &#123;</span><br><span class="line"></span><br><span class="line">          wx.getUserInfo(&#123;</span><br><span class="line"></span><br><span class="line">            success: function (res) &#123;</span><br><span class="line"></span><br><span class="line">              that.globalData.userInfo = res.userInfo;</span><br><span class="line"></span><br><span class="line">              typeof cb == &quot;function&quot; &amp;&amp; cb(that.globalData.userInfo)</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">          &#125;)</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  globalData:&#123;</span><br><span class="line"></span><br><span class="line">    userInfo:null</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>app.json 是对整个小程序的全局配置。我们可以在这个文件中配置小程序是由哪些页面组成，配置小程序的窗口  背景色，配置导航条样式，配置默认标题。注意该文件不可添加任何注释。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">/**app.json*/</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  &quot;pages&quot;:[</span><br><span class="line"></span><br><span class="line">    &quot;pages/index/index&quot;,</span><br><span class="line"></span><br><span class="line">    &quot;pages/logs/logs&quot;</span><br><span class="line"></span><br><span class="line">  ],</span><br><span class="line"></span><br><span class="line">  &quot;window&quot;:&#123;</span><br><span class="line"></span><br><span class="line">    &quot;backgroundTextStyle&quot;:&quot;light&quot;,</span><br><span class="line"></span><br><span class="line">    &quot;navigationBarBackgroundColor&quot;: &quot;#fff&quot;,</span><br><span class="line"></span><br><span class="line">    &quot;navigationBarTitleText&quot;: &quot;WeChat&quot;,</span><br><span class="line"></span><br><span class="line">    &quot;navigationBarTextStyle&quot;:&quot;black&quot;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>app.wxss 是整个小程序的公共样式表。我们可以在页面组件的 class 属性上直接使用 app.wxss 中声明的样式规则。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/**app.wxss**/</span><br><span class="line"></span><br><span class="line">.container &#123;</span><br><span class="line"></span><br><span class="line">  height: 100%;</span><br><span class="line"></span><br><span class="line">  display: flex;</span><br><span class="line"></span><br><span class="line">  flex-direction: column;</span><br><span class="line"></span><br><span class="line">  align-items: center;</span><br><span class="line"></span><br><span class="line">  justify-content: space-between;</span><br><span class="line"></span><br><span class="line">  padding: 200rpx 0;</span><br><span class="line"></span><br><span class="line">  box-sizing: border-box;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <ol>
 <li>创建页面</li>
 </ol>
 <p>在这个教程里，我们有两个页面，index 页面和 logs 页面，即欢迎页和小程序启动日志的展示页，他们都在 pages 目录下。微信小程序中的每一个页面的【路径 + 页面名】都需要写在 app.json 的 pages 中，且 pages 中的第一个页面是小程序的首页。</p>
 <p>每一个小程序页面是由同路径下同名的四个不同后缀文件的组成，如：index.js、index.wxml、index.wxss、index.json。.js 后缀的文件是脚本文件，.json 后缀的文件是配置文件，.wxss 后缀的是样式表文件，.wxml 后缀的文件是页面结构文件。</p>
-<p>index.wxml 是页面的结构文件：</p>
-<!--index.wxml-->
-<view class="container"><br><br>  <view bindtap="bindViewTap" class="userinfo"><br><br>    <image class="userinfo-avatar" src="" background-size="cover"></image><br><br>    <text class="userinfo-nickname"></text><br><br>  </view>
-
-  <view class="usermotto"><br><br>    <text class="user-motto"></text><br><br>  </view>
-
-<p></p></view><br>本例中使用了 <view>、<image>、<text> 来搭建页面结构，绑定数据和交互处理函数。<p></p>
-<p>index.js 是页面的脚本文件，在这个文件中我们可以监听并处理页面的生命周期函数、获取小程序实例，声明并处理数据，响应页面交互事件等。</p>
-<p>//index.js</p>
-<p>// 获取应用实例</p>
-<p>var app = getApp()</p>
-<p>Page({</p>
-<p>  data: {</p>
-<pre><code>motto: &apos;Hello World&apos;,
-
-userInfo: {}
-</code></pre><p>  },</p>
-<p>  // 事件处理函数</p>
-<p>  bindViewTap: function() {</p>
-<pre><code>wx.navigateTo({
-
-  url: &apos;../logs/logs&apos;
-
-})
-</code></pre><p>  },</p>
-<p>  onLoad: function () {</p>
-<pre><code>console.log(&apos;onLoad&apos;)
-
-var that = this
-
-// 调用应用实例的方法获取全局数据
-
-app.getUserInfo(function(userInfo){
-
-  // 更新数据
-
-  that.setData({
-
-    userInfo:userInfo
-
-  })
-
-})
-</code></pre><p>  }</p>
-<p>})<br>index.wxss 是页面的样式表：</p>
-<p>/<strong>index.wxss</strong>/</p>
-<p>.userinfo {</p>
-<p>  display: flex;</p>
-<p>  flex-direction: column;</p>
-<p>  align-items: center;</p>
-<p>}</p>
-<p>.userinfo-avatar {</p>
-<p>  width: 128rpx;</p>
-<p>  height: 128rpx;</p>
-<p>  margin: 20rpx;</p>
-<p>  border-radius: 50%;</p>
-<p>}</p>
-<p>.userinfo-nickname {</p>
-<p>  color: #aaa;</p>
-<p>}</p>
-<p>.usermotto {</p>
-<p>  margin-top: 200px;</p>
-<p>}<br>页面的样式表是非必要的。当有页面样式表时，页面的样式表中的样式规则会层叠覆盖 app.wxss 中的样式规则。如果不指定页面的样式表，也可以在页面的结构文件中直接使用 app.wxss 中指定的样式规则。</p>
+<p>index.wxml 是页面的结构文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--index.wxml--&gt;</span><br><span class="line"></span><br><span class="line">&lt;view class=&quot;container&quot;&gt;</span><br><span class="line"></span><br><span class="line">  &lt;view  bindtap=&quot;bindViewTap&quot; class=&quot;userinfo&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;image class=&quot;userinfo-avatar&quot; src=&quot;&#123;&#123;userInfo.avatarUrl&#125;&#125;&quot; background-size=&quot;cover&quot;&gt;&lt;/image&gt;</span><br><span class="line"></span><br><span class="line">    &lt;text class=&quot;userinfo-nickname&quot;&gt;&#123;&#123;userInfo.nickName&#125;&#125;&lt;/text&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/view&gt;</span><br><span class="line"></span><br><span class="line">  &lt;view class=&quot;usermotto&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;text class=&quot;user-motto&quot;&gt;&#123;&#123;motto&#125;&#125;&lt;/text&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/view&gt;</span><br><span class="line"></span><br><span class="line">&lt;/view&gt;</span><br></pre></td></tr></table></figure></p>
+<p>本例中使用了 <view>、<image>、<text> 来搭建页面结构，绑定数据和交互处理函数。</text></image></view></p>
+<p>index.js 是页面的脚本文件，在这个文件中我们可以监听并处理页面的生命周期函数、获取小程序实例，声明并处理数据，响应页面交互事件等。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">//index.js</span><br><span class="line"></span><br><span class="line">// 获取应用实例</span><br><span class="line"></span><br><span class="line">var app = getApp()</span><br><span class="line"></span><br><span class="line">Page(&#123;</span><br><span class="line"></span><br><span class="line">  data: &#123;</span><br><span class="line"></span><br><span class="line">    motto: &apos;Hello World&apos;,</span><br><span class="line"></span><br><span class="line">    userInfo: &#123;&#125;</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  // 事件处理函数</span><br><span class="line"></span><br><span class="line">  bindViewTap: function() &#123;</span><br><span class="line"></span><br><span class="line">    wx.navigateTo(&#123;</span><br><span class="line"></span><br><span class="line">      url: &apos;../logs/logs&apos;</span><br><span class="line"></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  onLoad: function () &#123;</span><br><span class="line"></span><br><span class="line">    console.log(&apos;onLoad&apos;)</span><br><span class="line"></span><br><span class="line">    var that = this</span><br><span class="line"></span><br><span class="line">    // 调用应用实例的方法获取全局数据</span><br><span class="line"></span><br><span class="line">    app.getUserInfo(function(userInfo)&#123;</span><br><span class="line"></span><br><span class="line">      // 更新数据</span><br><span class="line"></span><br><span class="line">      that.setData(&#123;</span><br><span class="line"></span><br><span class="line">        userInfo:userInfo</span><br><span class="line"></span><br><span class="line">      &#125;)</span><br><span class="line"></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line">index.wxss 是页面的样式表：</span><br><span class="line"></span><br><span class="line">/**index.wxss**/</span><br><span class="line"></span><br><span class="line">.userinfo &#123;</span><br><span class="line"></span><br><span class="line">  display: flex;</span><br><span class="line"></span><br><span class="line">  flex-direction: column;</span><br><span class="line"></span><br><span class="line">  align-items: center;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">.userinfo-avatar &#123;</span><br><span class="line"></span><br><span class="line">  width: 128rpx;</span><br><span class="line"></span><br><span class="line">  height: 128rpx;</span><br><span class="line"></span><br><span class="line">  margin: 20rpx;</span><br><span class="line"></span><br><span class="line">  border-radius: 50%;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">.userinfo-nickname &#123;</span><br><span class="line"></span><br><span class="line">  color: #aaa;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">.usermotto &#123;</span><br><span class="line"></span><br><span class="line">  margin-top: 200px;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>页面的样式表是非必要的。当有页面样式表时，页面的样式表中的样式规则会层叠覆盖 app.wxss 中的样式规则。如果不指定页面的样式表，也可以在页面的结构文件中直接使用 app.wxss 中指定的样式规则。</p>
 <p>index.json 是页面的配置文件：</p>
 <p>页面的配置文件是非必要的。当有页面的配置文件时，配置项在该页面会覆盖 app.json 的 window 中相同的配置项。如果没有指定的页面配置文件，则在该页面直接使用 app.json 中的默认配置。</p>
-<p>logs 的页面结构</p>
-<!--logs.wxml-->
-<view class="container log-list">
-
-  <block wx:for-items="" wx:for-item="log"><br><br>    <text class="log-item">NaN. </text><br><br>  </block>
-
-<p></p></view><br>logs 页面使用 <block> 控制标签来组织代码，在 <block> 上使用 wx:for-items 绑定 logs 数据，并将 logs 数据循环展开节点<p></p>
-<p>//logs.js</p>
-<p>var util = require(‘../../utils/util.js’)</p>
-<p>Page({</p>
-<p>  data: {</p>
-<pre><code>logs: []
-</code></pre><p>  },</p>
-<p>  onLoad: function () {</p>
-<pre><code>this.setData({
-
-  logs: (wx.getStorageSync(&apos;logs&apos;) || []).map(function (log) {
-
-    return util.formatTime(new Date(log))
-
-  })
-
-})
-</code></pre><p>  }</p>
-<p>})<br>运行结果如下：</p>
+<p>logs 的页面结构<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--logs.wxml--&gt;</span><br><span class="line"></span><br><span class="line">&lt;view class=&quot;container log-list&quot;&gt;</span><br><span class="line"></span><br><span class="line">  &lt;block wx:for-items=&quot;&#123;&#123;logs&#125;&#125;&quot; wx:for-item=&quot;log&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;text class=&quot;log-item&quot;&gt;&#123;&#123;index + 1&#125;&#125;. &#123;&#123;log&#125;&#125;&lt;/text&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/block&gt;</span><br><span class="line"></span><br><span class="line">&lt;/view&gt;</span><br></pre></td></tr></table></figure></p>
+<p>logs 页面使用 <block> 控制标签来组织代码，在 <block> 上使用 wx:for-items 绑定 logs 数据，并将 logs 数据循环展开节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">//logs.js</span><br><span class="line"></span><br><span class="line">var util = require(&apos;../../utils/util.js&apos;)</span><br><span class="line"></span><br><span class="line">Page(&#123;</span><br><span class="line"></span><br><span class="line">  data: &#123;</span><br><span class="line"></span><br><span class="line">    logs: []</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  onLoad: function () &#123;</span><br><span class="line"></span><br><span class="line">    this.setData(&#123;</span><br><span class="line"></span><br><span class="line">      logs: (wx.getStorageSync(&apos;logs&apos;) || []).map(function (log) &#123;</span><br><span class="line"></span><br><span class="line">        return util.formatTime(new Date(log))</span><br><span class="line"></span><br><span class="line">      &#125;)</span><br><span class="line"></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></block></block></p>
+<p>运行结果如下：</p>
 <ol>
 <li>手机预览</li>
 </ol>
@@ -487,15 +343,18 @@ app.getUserInfo(function(userInfo){
 <li>「Js」文件需要在「app.json」文件的「”page”」里预先配置好。为了项目结构清晰化，我在示例项目中的「index」首页同级目录新建其它四个页面文件，具体如下：</li>
 </ol>
 <p>经过以上步骤，案例中的五个底部菜单就全部配置完毕了。</p>
-<p>我们的应用号开发教程将借「名片盒」公众号持续更新，滚动播出。</p>
-<p>关注「名片盒」公众号，回复「应用号」即可看到最新内容！</p>
-</block></block></text></image></view>
+<p>转贴自：<a href="https://my.oschina.net/wwnick/blog/750055" target="_blank" rel="external">https://my.oschina.net/wwnick/blog/750055</a><br>原作者：博卡君</p>
+
       
     </div>
     
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wechat/">wechat</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小程序-，应用号，微信应用号，微信小程序/">小程序 ，应用号，微信应用号，微信小程序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信/">微信</a></li></ul>
+	</div>
+
       
 
       
